@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -100,7 +99,7 @@
         
         <div class="input-group">
             <label for="inquiryCode">문의 코드 (Inquiry Code)</label>
-            <input type="text" id="inquiryCode" placeholder="예: a1b2c3d4">
+            <input type="text" id="inquiryCode" placeholder="문의 코드 입력">
         </div>
 
         <div class="input-group">
@@ -115,8 +114,8 @@
 
     <!-- 조건 충족 시 나타나는 하단 영역 -->
     <div id="resultPanel" class="result-panel">
-        <h3>✅ 인증 완료 (테스트 화면)</h3>
-        <p>인증이 완료되었습니다. 아래에서 커스텀 유닛 설정을 진행할 수 있습니다.</p>
+        <h3>✅ 인증 완료</h3>
+        <p>형식이 확인되었습니다.</p>
     </div>
 
     <script>
@@ -126,8 +125,9 @@
             const errorMsg = document.getElementById('errorMsg');
             const resultPanel = document.getElementById('resultPanel');
 
-            // 간단한 형식 입력 체크 (시뮬레이션 용도)
-            if (code === "" || pass === "") {
+            // 예시: 특정 글자 수나 조건(예: 코드는 8자리 이상, 비밀번호는 비어있지 않음 등)을 만족해야만 통과하도록 설정
+            // 실제 게임 서버와 대조하는 것은 웹브라우저 상에서 불가능하므로 형식 검사로 대체합니다.
+            if (code.length < 8 || pass.length < 4) {
                 errorMsg.innerText = "코드,비번이 다릅니다";
                 errorMsg.style.display = "block";
                 resultPanel.style.display = "none";
