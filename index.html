@@ -1,142 +1,403 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥코 커스텀 스튜디오</title>
-    <style>
-        body {
-            font-family: 'Apple SD Gothic Neo', sans-serif;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 90vh;
-        }
-        .login-card {
-            background-color: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 12px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .login-card h2 {
-            color: #ffcc00;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #ccc;
-            margin-bottom: 5px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #555;
-            background-color: #333;
-            color: #fff;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        .btn-submit {
-            background-color: #ff6600;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 15px;
-            margin-top: 10px;
-        }
-        .btn-submit:hover {
-            background-color: #ff8533;
-        }
-        .error-message {
-            color: #ff4d4d;
-            font-size: 13px;
-            margin-top: 15px;
-            display: none;
-            font-weight: bold;
-        }
-        .result-panel {
-            display: none;
-            margin-top: 25px;
-            background-color: #2a2a2a;
-            border: 2px solid #555;
-            border-radius: 12px;
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-        .result-panel h3 {
-            color: #ff9900;
-            margin-top: 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>릴리 냥코 커스텀</title>
+<style>
+:root {
+  --bg:#10131b; --panel:#1b2231; --line:#39445b;
+  --text:#f5f6fb; --muted:#adb8cc; --yellow:#ffd447;
+  --orange:#ff943d; --green:#65dfaa; --blue:#6da7ff;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; color:var(--text);
+  font-family:system-ui,"Noto Sans KR",sans-serif;
+  background:radial-gradient(circle at top,#28334a,#10131b 55%);
+}
+header {
+  padding:17px; background:#141a26;
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:5;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.logo {
+  width:48px; height:48px; border-radius:15px;
+  display:grid; place-items:center; font-size:28px;
+  background:linear-gradient(135deg,#ffe56b,#ff853b);
+}
+h1 { font-size:20px; margin:0; }
+header p { font-size:12px; color:var(--muted); margin:4px 0 0; }
+main { max-width:950px; padding:15px; margin:auto; }
+.hero {
+  padding:20px; border:1px solid #625038; border-radius:19px;
+  background:linear-gradient(125deg,#403221,#252a40);
+  margin-bottom:14px;
+}
+.hero small { color:var(--yellow); font-weight:800; }
+.hero h2 { margin:8px 0; font-size:25px; }
+.hero p { color:#d3d9e6; font-size:13px; line-height:1.6; }
+.tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:13px; }
+.tab {
+  padding:12px 4px; border:1px solid var(--line);
+  background:var(--panel); color:var(--muted);
+  border-radius:12px; font-weight:800; font-size:12px;
+}
+.tab.active { background:#44391e; border-color:#c7a13b; color:#ffe37a; }
+.panel {
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:17px; padding:15px; margin-bottom:13px;
+}
+.panel h3 { margin:0 0 13px; font-size:17px; }
+label { display:block; font-size:13px; color:#d0d7e5; margin:12px 0 6px; }
+input,select,textarea {
+  width:100%; padding:12px; border-radius:10px;
+  border:1px solid #3b465d; background:#111722;
+  color:var(--text); font:inherit;
+}
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.btnrow { display:flex; flex-wrap:wrap; gap:8px; margin-top:13px; }
+button { cursor:pointer; }
+.action {
+  border:0; padding:11px 13px; border-radius:10px;
+  background:var(--orange); color:#28190d; font-weight:850;
+}
+.secondary { background:#303a4f; color:white; border:1px solid #4a5872; }
+.green { background:var(--green); color:#10271c; }
+.preview {
+  text-align:center; padding:18px; border-radius:14px;
+  background:#111722; border:1px dashed #53617a;
+}
+.cat { font-size:53px; }
+.preview h4 { margin:5px 0; font-size:19px; }
+.preview p,.hint { font-size:12px; color:var(--muted); line-height:1.6; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.stat { padding:12px; border-radius:12px; background:#111722; border:1px solid #303b50; }
+.stat span { font-size:12px; color:var(--muted); }
+.stat strong { display:block; font-size:20px; margin-top:4px; overflow-wrap:anywhere; }
+.unit {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; padding:11px; margin:8px 0;
+  border-radius:11px; background:#111722; border:1px solid #303b50;
+}
+.unit strong { font-size:13px; overflow-wrap:anywhere; }
+.unit small { display:block; color:var(--muted); font-size:11px; margin-top:4px; }
+.notice { display:none; margin-top:12px; padding:11px; border-radius:10px; background:#173b2d; color:#b8f8d5; font-size:12px; }
+footer { text-align:center; padding:15px; color:#8f9bb0; font-size:11px; }
+@media(min-width:720px) {
+  .tabs { grid-template-columns:repeat(5,1fr); }
+  .layout { display:grid; grid-template-columns:1.1fr .9fr; gap:14px; }
+}
+</style>
 </head>
 <body>
-
-    <div class="login-card">
-        <h2>🐾 냥코 계정 인증</h2>
-        
-        <div class="input-group">
-            <label for="inquiryCode">문의 코드 (Inquiry Code)</label>
-            <input type="text" id="inquiryCode" placeholder="문의 코드 입력">
-        </div>
-
-        <div class="input-group">
-            <label for="authPassword">인증 번호 (Password)</label>
-            <input type="password" id="authPassword" placeholder="인증 번호 입력">
-        </div>
-
-        <button class="btn-submit" onclick="handleApply()">적용하기</button>
-        
-        <div id="errorMsg" class="error-message">코드,비번이 다릅니다</div>
+<header>
+  <div class="brand">
+    <div class="logo">🐱</div>
+    <div>
+      <h1>릴리 냥코 커스텀</h1>
+      <p>나만의 냥코 설정 에디터</p>
     </div>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <small>✨ LILY NYANKO CUSTOM</small>
+    <h2>나만의 냥코를 만들어 봐!</h2>
+    <p>캐릭터 능력치, 재화, 적과 스테이지를 자유롭게 설정해 봐.
+    변경한 설정은 미리보기에서 확인할 수 있어!</p>
+  </section>
 
-    <!-- 조건 충족 시 나타나는 하단 영역 -->
-    <div id="resultPanel" class="result-panel">
-        <h3>✅ 인증 완료</h3>
-        <p>형식이 확인되었습니다.</p>
-    </div>
+  <nav class="tabs">
+    <button class="tab active" data-page="character">🐱 캐릭터</button>
+    <button class="tab" data-page="currency">🪙 재화</button>
+    <button class="tab" data-page="enemy">👾 적 설정</button>
+    <button class="tab" data-page="stage">🌋 스테이지</button>
+    <button class="tab" data-page="save">💾 저장/불러오기</button>
+  </nav>
 
-    <script>
-        function handleApply() {
-            const code = document.getElementById('inquiryCode').value.trim();
-            const pass = document.getElementById('authPassword').value.trim();
-            const errorMsg = document.getElementById('errorMsg');
-            const resultPanel = document.getElementById('resultPanel');
+  <div class="layout">
+  <div>
+    <section class="panel page" id="character">
+      <h3>🐱 캐릭터 에디터</h3>
+      <label for="catName">캐릭터 이름</label>
+      <input id="catName" maxlength="40" value="릴리 냥코">
+      <div class="grid">
+        <div><label for="catType">등급</label>
+          <select id="catType">
+            <option>일반</option><option>희귀</option><option>슈퍼 레어</option>
+            <option>울트라 슈퍼 레어</option><option>전설 레어</option><option>커스텀</option>
+          </select>
+        </div>
+        <div><label for="catEmoji">아이콘</label>
+          <select id="catEmoji">
+            <option>🐱</option><option>🐈</option><option>🦊</option>
+            <option>🐉</option><option>👑</option><option>🌸</option><option>⚔️</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid">
+        <div><label for="health">체력</label><input id="health" type="number" min="1" value="12000"></div>
+        <div><label for="damage">공격력</label><input id="damage" type="number" min="1" value="4500"></div>
+        <div><label for="range">사거리</label><input id="range" type="number" min="1" value="350"></div>
+        <div><label for="cost">출격 비용</label><input id="cost" type="number" min="0" value="900"></div>
+      </div>
+      <label for="ability">특수 능력</label>
+      <select id="ability">
+        <option>없음</option><option>크리티컬</option><option>파동</option>
+        <option>열파</option><option>빠른 이동</option><option>적을 느리게 함</option>
+        <option>초 데미지</option><option>전 속성 엄청 강함</option>
+      </select>
+      <div class="btnrow">
+        <button class="action" id="applyCat">캐릭터 적용</button>
+        <button class="action secondary" id="resetCat">기본값</button>
+      </div>
+      <p class="hint">이 설정은 이 커스텀 사이트 안에서만 사용돼. 공식 냥코 게임의 데이터는 변경하지 않아.</p>
+    </section>
 
-            // 예시: 특정 글자 수나 조건(예: 코드는 8자리 이상, 비밀번호는 비어있지 않음 등)을 만족해야만 통과하도록 설정
-            // 실제 게임 서버와 대조하는 것은 웹브라우저 상에서 불가능하므로 형식 검사로 대체합니다.
-            if (code.length < 8 || pass.length < 4) {
-                errorMsg.innerText = "코드,비번이 다릅니다";
-                errorMsg.style.display = "block";
-                resultPanel.style.display = "none";
-            } else {
-                errorMsg.style.display = "none";
-                resultPanel.style.display = "block";
-            }
-        }
-    </script>
+    <section class="panel page" id="currency" hidden>
+      <h3>🪙 재화 설정</h3>
+      <div class="grid">
+        <div><label for="cans">통조림</label><input id="cans" type="number" min="0" value="1500"></div>
+        <div><label for="xp">경험치 XP</label><input id="xp" type="number" min="0" value="25000"></div>
+        <div><label for="tickets">냥코 티켓</label><input id="tickets" type="number" min="0" value="5"></div>
+        <div><label for="energy">통솔력</label><input id="energy" type="number" min="0" value="200"></div>
+      </div>
+      <div class="btnrow">
+        <button class="action" id="applyMoney">재화 적용</button>
+        <button class="action secondary" data-add="cans" data-amount="100">통조림 +100</button>
+        <button class="action secondary" data-add="cans" data-amount="-100">통조림 -100</button>
+        <button class="action secondary" data-add="xp" data-amount="1000">XP +1000</button>
+        <button class="action secondary" data-add="xp" data-amount="-1000">XP -1000</button>
+      </div>
+      <p class="hint">재화 숫자는 커스텀 사이트에 저장되는 값이야.</p>
+    </section>
 
+    <section class="panel page" id="enemy" hidden>
+      <h3>👾 적 설정</h3>
+      <label for="enemyName">적 이름</label>
+      <input id="enemyName" maxlength="40" value="강력한 멍뭉이">
+      <div class="grid">
+        <div><label for="enemyHp">적 체력</label><input id="enemyHp" type="number" min="1" value="50000"></div>
+        <div><label for="enemyAtk">적 공격력</label><input id="enemyAtk" type="number" min="1" value="2300"></div>
+      </div>
+      <label for="enemyTrait">적 속성</label>
+      <select id="enemyTrait">
+        <option>흰 적</option><option>빨간 적</option><option>검은 적</option>
+        <option>천사</option><option>에이리언</option><option>좀비</option>
+        <option>악마</option><option>고대종</option>
+      </select>
+      <div class="btnrow"><button class="action" id="applyEnemy">적 설정 적용</button></div>
+    </section>
+
+    <section class="panel page" id="stage" hidden>
+      <h3>🌋 스테이지 에디터</h3>
+      <label for="stageName">스테이지 이름</label>
+      <input id="stageName" maxlength="50" value="릴리의 모험">
+      <div class="grid">
+        <div><label for="stageLevel">스테이지 레벨</label><input id="stageLevel" type="number" min="1" value="1"></div>
+        <div><label for="stageReward">클리어 XP 보상</label><input id="stageReward" type="number" min="0" value="500"></div>
+      </div>
+      <label for="difficulty">난이도</label>
+      <select id="difficulty">
+        <option>쉬움</option><option>보통</option><option>어려움</option>
+        <option>초극난도</option><option>절망적인 난이도</option>
+      </select>
+      <div class="btnrow"><button class="action" id="applyStage">스테이지 적용</button></div>
+    </section>
+
+    <section class="panel page" id="save" hidden>
+      <h3>💾 저장 / 불러오기</h3>
+      <p class="hint">기기에 설정을 저장하거나 JSON 파일로 내보낼 수 있어.</p>
+      <div class="btnrow">
+        <button class="action green" id="saveLocal">이 기기에 저장</button>
+        <button class="action secondary" id="loadLocal">불러오기</button>
+        <button class="action secondary" id="exportJson">JSON 만들기</button>
+      </div>
+      <label for="jsonBox">설정 코드</label>
+      <textarea id="jsonBox" rows="7" placeholder="JSON 만들기를 누르면 코드가 표시돼."></textarea>
+      <div class="btnrow"><button class="action secondary" id="importJson">코드에서 불러오기</button></div>
+      <div class="notice" id="notice" role="status"></div>
+    </section>
+  </div>
+
+  <div>
+    <section class="panel">
+      <h3>👀 실시간 미리보기</h3>
+      <div class="preview">
+        <div class="cat" id="vEmoji">🐱</div>
+        <h4 id="vName">릴리 냥코</h4>
+        <p id="vRarity">일반 · 특수 능력: 없음</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><span>❤️ 체력</span><strong id="vHealth">12,000</strong></div>
+        <div class="stat"><span>⚔️ 공격력</span><strong id="vDamage">4,500</strong></div>
+        <div class="stat"><span>🎯 사거리</span><strong id="vRange">350</strong></div>
+        <div class="stat"><span>🪙 출격 비용</span><strong id="vCost">900</strong></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>📋 현재 설정</h3>
+      <div class="unit"><div><strong>🪙 통조림</strong><small>커스텀 재화</small></div><b id="vCans">1,500</b></div>
+      <div class="unit"><div><strong>⭐ 경험치</strong><small>커스텀 재화</small></div><b id="vXp">25,000</b></div>
+      <div class="unit"><div><strong>🎟️ 티켓</strong><small>커스텀 재화</small></div><b id="vTickets">5</b></div>
+      <div class="unit"><div><strong>👾 적</strong><small id="vEnemyTrait">흰 적</small></div><b id="vEnemy">강력한 멍뭉이</b></div>
+      <div class="unit"><div><strong>🌋 스테이지</strong><small id="vDifficulty">쉬움 · 레벨 1</small></div><b id="vStage">릴리의 모험</b></div>
+    </section>
+  </div>
+  </div>
+  <footer>릴리 냥코 커스텀 · 팬 제작 설정 에디터</footer>
+</main>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const fields = [
+  "catName","catType","catEmoji","health","damage","range","cost","ability",
+  "cans","xp","tickets","energy","enemyName","enemyHp","enemyAtk","enemyTrait",
+  "stageName","stageLevel","stageReward","difficulty"
+];
+
+function readSettings() {
+  const result = {};
+  fields.forEach(id => result[id] = $(id).value);
+  return result;
+}
+
+function applySettings(settings) {
+  fields.forEach(id => {
+    if (Object.prototype.hasOwnProperty.call(settings,id)) {
+      $(id).value = settings[id];
+    }
+  });
+  refresh();
+}
+
+function numberText(id) {
+  const value = Number($(id).value);
+  return (Number.isFinite(value) ? value : 0).toLocaleString("ko-KR");
+}
+
+function refresh() {
+  $("vEmoji").textContent = $("catEmoji").value;
+  $("vName").textContent = $("catName").value || "이름 없는 냥코";
+  $("vRarity").textContent = $("catType").value + " · 특수 능력: " + $("ability").value;
+  $("vHealth").textContent = numberText("health");
+  $("vDamage").textContent = numberText("damage");
+  $("vRange").textContent = numberText("range");
+  $("vCost").textContent = numberText("cost");
+  $("vCans").textContent = numberText("cans");
+  $("vXp").textContent = numberText("xp");
+  $("vTickets").textContent = numberText("tickets");
+  $("vEnemy").textContent = $("enemyName").value || "이름 없는 적";
+  $("vEnemyTrait").textContent = $("enemyTrait").value;
+  $("vStage").textContent = $("stageName").value || "이름 없는 스테이지";
+  $("vDifficulty").textContent = $("difficulty").value + " · 레벨 " + numberText("stageLevel");
+}
+
+function notice(message) {
+  const box = $("notice");
+  box.textContent = message;
+  box.style.display = "block";
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(tab =>
+      tab.classList.toggle("active", tab === button)
+    );
+    document.querySelectorAll(".page").forEach(page =>
+      page.hidden = page.id !== button.dataset.page
+    );
+  });
+});
+
+fields.forEach(id => {
+  $(id).addEventListener("input", refresh);
+  $(id).addEventListener("change", refresh);
+});
+
+$("applyCat").addEventListener("click", () => {
+  refresh();
+  alert("캐릭터 설정을 적용했어!");
+});
+
+$("resetCat").addEventListener("click", () => {
+  applySettings({
+    catName:"릴리 냥코",catType:"일반",catEmoji:"🐱",
+    health:12000,damage:4500,range:350,cost:900,ability:"없음"
+  });
+});
+
+$("applyMoney").addEventListener("click", () => {
+  refresh();
+  alert("재화 설정을 적용했어!");
+});
+
+document.querySelectorAll("[data-add]").forEach(button => {
+  button.addEventListener("click", () => {
+    const id = button.dataset.add;
+    const amount = Number(button.dataset.amount);
+    $(id).value = Math.max(0, (Number($(id).value) || 0) + amount);
+    refresh();
+  });
+});
+
+$("applyEnemy").addEventListener("click", () => {
+  refresh();
+  alert("적 설정을 적용했어!");
+});
+
+$("applyStage").addEventListener("click", () => {
+  refresh();
+  alert("스테이지 설정을 적용했어!");
+});
+
+$("saveLocal").addEventListener("click", () => {
+  try {
+    localStorage.setItem("lilyNyankoCustom", JSON.stringify(readSettings()));
+    notice("현재 설정을 이 기기에 저장했어!");
+  } catch (error) {
+    notice("저장하지 못했어. 브라우저 설정을 확인해 줘.");
+  }
+});
+
+$("loadLocal").addEventListener("click", () => {
+  try {
+    const saved = localStorage.getItem("lilyNyankoCustom");
+    if (!saved) {
+      notice("저장된 설정이 없어. 먼저 저장해 줘.");
+      return;
+    }
+    applySettings(JSON.parse(saved));
+    notice("저장한 설정을 불러왔어!");
+  } catch (error) {
+    notice("설정을 불러오지 못했어.");
+  }
+});
+
+$("exportJson").addEventListener("click", () => {
+  $("jsonBox").value = JSON.stringify(readSettings(), null, 2);
+  notice("JSON 코드가 만들어졌어. 복사해서 보관해 줘.");
+});
+
+$("importJson").addEventListener("click", () => {
+  try {
+    const parsed = JSON.parse($("jsonBox").value);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new Error("올바른 설정 객체가 아니야.");
+    }
+    applySettings(parsed);
+    notice("설정 코드를 불러왔어!");
+  } catch (error) {
+    notice("코드 형식이 올바르지 않아. JSON을 확인해 줘.");
+  }
+});
+
+refresh();
+</script>
 </body>
 </html>
