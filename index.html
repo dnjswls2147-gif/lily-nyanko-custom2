@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>릴리의 냥코 커스텀 스튜디오</title>
+    <title>냥코 커스텀 스튜디오</title>
     <style>
         body {
             font-family: 'Apple SD Gothic Neo', sans-serif;
@@ -15,154 +15,127 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            min-height: 90vh;
         }
-        h1 { color: #ffcc00; margin-bottom: 5px; }
-        .subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
-        .container {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
-            flex-wrap: wrap;
-        }
-        .panel {
+        .login-card {
             background-color: #2a2a2a;
             border: 2px solid #444;
             border-radius: 12px;
-            padding: 20px;
-            flex: 1;
-            min-width: 300px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            text-align: center;
         }
-        .panel h2 { margin-top: 0; color: #ff9900; font-size: 18px; border-bottom: 1px solid #444; padding-bottom: 8px; }
+        .login-card h2 {
+            color: #ffcc00;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
         .input-group {
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 15px;
+            text-align: left;
         }
-        label { font-size: 13px; margin-bottom: 4px; color: #ccc; }
-        input, select {
-            padding: 8px;
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
             border-radius: 6px;
             border: 1px solid #555;
             background-color: #333;
             color: #fff;
             font-size: 14px;
+            box-sizing: border-box;
         }
-        .preview-screen {
-            background-color: #111;
-            border: 2px dashed #555;
-            border-radius: 12px;
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .unit-card {
-            background: linear-gradient(135deg, #ff6600, #ffcc00);
-            color: #000;
-            padding: 15px 25px;
-            border-radius: 20px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
-            text-align: center;
-            animation: bounce 1s infinite alternate;
-        }
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-10px); }
-        }
-        .stats-display {
-            margin-top: 15px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .btn {
+        .btn-submit {
             background-color: #ff6600;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            font-size: 15px;
             margin-top: 10px;
         }
-        .btn:hover { background-color: #ff8533; }
+        .btn-submit:hover {
+            background-color: #ff8533;
+        }
+        .error-message {
+            color: #ff4d4d;
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+            font-weight: bold;
+        }
+        .result-panel {
+            display: none;
+            margin-top: 25px;
+            background-color: #2a2a2a;
+            border: 2px solid #555;
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        .result-panel h3 {
+            color: #ff9900;
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
 
-    <h1>🐾 릴리의 냥코 커스텀 스튜디오</h1>
-    <div class="subtitle">나만의 커스텀 캐릭터 스펙을 설정하고 미리 확인해보세요!</div>
-
-    <div class="container">
-        <!-- 설정 패널 -->
-        <div class="panel">
-            <h2>⚙️ 캐릭터 스펙 설정</h2>
-            <div class="input-group">
-                <label>캐릭터 이름</label>
-                <input type="text" id="unitName" value="각성한 릴리 캣" oninput="updateStats()">
-            </div>
-            <div class="input-group">
-                <label>체력 (HP)</label>
-                <input type="number" id="unitHp" value="150000" oninput="updateStats()">
-            </div>
-            <div class="input-group">
-                <label>공격력 (ATK)</label>
-                <input type="number" id="unitAtk" value="45000" oninput="updateStats()">
-            </div>
-            <div class="input-group">
-                <label>사거리</label>
-                <input type="number" id="unitRange" value="450" oninput="updateStats()">
-            </div>
-            <div class="input-group">
-                <label>특수 능력</label>
-                <select id="unitAbility" onchange="updateStats()">
-                    <option value="없음">없음</option>
-                    <option value="파동 발사 (1레벨)">파동 발사 (1레벨)</option>
-                    <option value="열파 발사">열파 발사</option>
-                    <option value="100% 크리티컬">100% 크리티컬</option>
-                    <option value="메탈 맷집">메탈 맷집</option>
-                </select>
-            </div>
+    <div class="login-card">
+        <h2>🐾 냥코 계정 인증</h2>
+        
+        <div class="input-group">
+            <label for="inquiryCode">문의 코드 (Inquiry Code)</label>
+            <input type="text" id="inquiryCode" placeholder="예: a1b2c3d4">
         </div>
 
-        <!-- 미리보기 패널 -->
-        <div class="panel">
-            <h2>👀 유닛 미리보기 & 정보</h2>
-            <div class="preview-screen">
-                <div class="unit-card" id="cardName">각성한 릴리 캣</div>
-            </div>
-            <div class="stats-display" id="statsInfo">
-                <!-- 동적 텍스트 표시 -->
-            </div>
-            <button class="btn" onclick="alert('커스텀 데이터가 성공적으로 적용되었습니다!')">💾 설정 저장하기</button>
+        <div class="input-group">
+            <label for="authPassword">인증 번호 (Password)</label>
+            <input type="password" id="authPassword" placeholder="인증 번호 입력">
         </div>
+
+        <button class="btn-submit" onclick="handleApply()">적용하기</button>
+        
+        <div id="errorMsg" class="error-message">코드,비번이 다릅니다</div>
+    </div>
+
+    <!-- 조건 충족 시 나타나는 하단 영역 -->
+    <div id="resultPanel" class="result-panel">
+        <h3>✅ 인증 완료 (테스트 화면)</h3>
+        <p>인증이 완료되었습니다. 아래에서 커스텀 유닛 설정을 진행할 수 있습니다.</p>
     </div>
 
     <script>
-        function updateStats() {
-            const name = document.getElementById('unitName').value;
-            const hp = document.getElementById('unitHp').value;
-            const atk = document.getElementById('unitAtk').value;
-            const range = document.getElementById('unitRange').value;
-            const ability = document.getElementById('unitAbility').value;
+        function handleApply() {
+            const code = document.getElementById('inquiryCode').value.trim();
+            const pass = document.getElementById('authPassword').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const resultPanel = document.getElementById('resultPanel');
 
-            document.getElementById('cardName').innerText = name;
-            
-            document.getElementById('statsInfo').innerHTML = `
-                🔹 <b>이름:</b> ${name}<br>
-                ❤️ <b>체력:</b> ${Number(hp).toLocaleString()}<br>
-                ⚔️ <b>공격력:</b> ${Number(atk).toLocaleString()}<br>
-                🎯 <b>사거리:</b> ${range} (원거리)<br>
-                ✨ <b>특수 능력:</b> ${ability}
-            `;
+            // 간단한 형식 입력 체크 (시뮬레이션 용도)
+            if (code === "" || pass === "") {
+                errorMsg.innerText = "코드,비번이 다릅니다";
+                errorMsg.style.display = "block";
+                resultPanel.style.display = "none";
+            } else {
+                errorMsg.style.display = "none";
+                resultPanel.style.display = "block";
+            }
         }
-        // 초기 실행
-        updateStats();
     </script>
 
 </body>
