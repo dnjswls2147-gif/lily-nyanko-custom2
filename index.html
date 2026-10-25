@@ -1,1 +1,169 @@
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>릴리의 냥코 커스텀 스튜디오</title>
+    <style>
+        body {
+            font-family: 'Apple SD Gothic Neo', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #ffcc00; margin-bottom: 5px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            flex-wrap: wrap;
+        }
+        .panel {
+            background-color: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+        .panel h2 { margin-top: 0; color: #ff9900; font-size: 18px; border-bottom: 1px solid #444; padding-bottom: 8px; }
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        label { font-size: 13px; margin-bottom: 4px; color: #ccc; }
+        input, select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #fff;
+            font-size: 14px;
+        }
+        .preview-screen {
+            background-color: #111;
+            border: 2px dashed #555;
+            border-radius: 12px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .unit-card {
+            background: linear-gradient(135deg, #ff6600, #ffcc00);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
+            text-align: center;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+        .stats-display {
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn:hover { background-color: #ff8533; }
+    </style>
+</head>
+<body>
+
+    <h1>🐾 릴리의 냥코 커스텀 스튜디오</h1>
+    <div class="subtitle">나만의 커스텀 캐릭터 스펙을 설정하고 미리 확인해보세요!</div>
+
+    <div class="container">
+        <!-- 설정 패널 -->
+        <div class="panel">
+            <h2>⚙️ 캐릭터 스펙 설정</h2>
+            <div class="input-group">
+                <label>캐릭터 이름</label>
+                <input type="text" id="unitName" value="각성한 릴리 캣" oninput="updateStats()">
+            </div>
+            <div class="input-group">
+                <label>체력 (HP)</label>
+                <input type="number" id="unitHp" value="150000" oninput="updateStats()">
+            </div>
+            <div class="input-group">
+                <label>공격력 (ATK)</label>
+                <input type="number" id="unitAtk" value="45000" oninput="updateStats()">
+            </div>
+            <div class="input-group">
+                <label>사거리</label>
+                <input type="number" id="unitRange" value="450" oninput="updateStats()">
+            </div>
+            <div class="input-group">
+                <label>특수 능력</label>
+                <select id="unitAbility" onchange="updateStats()">
+                    <option value="없음">없음</option>
+                    <option value="파동 발사 (1레벨)">파동 발사 (1레벨)</option>
+                    <option value="열파 발사">열파 발사</option>
+                    <option value="100% 크리티컬">100% 크리티컬</option>
+                    <option value="메탈 맷집">메탈 맷집</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 미리보기 패널 -->
+        <div class="panel">
+            <h2>👀 유닛 미리보기 & 정보</h2>
+            <div class="preview-screen">
+                <div class="unit-card" id="cardName">각성한 릴리 캣</div>
+            </div>
+            <div class="stats-display" id="statsInfo">
+                <!-- 동적 텍스트 표시 -->
+            </div>
+            <button class="btn" onclick="alert('커스텀 데이터가 성공적으로 적용되었습니다!')">💾 설정 저장하기</button>
+        </div>
+    </div>
+
+    <script>
+        function updateStats() {
+            const name = document.getElementById('unitName').value;
+            const hp = document.getElementById('unitHp').value;
+            const atk = document.getElementById('unitAtk').value;
+            const range = document.getElementById('unitRange').value;
+            const ability = document.getElementById('unitAbility').value;
+
+            document.getElementById('cardName').innerText = name;
+            
+            document.getElementById('statsInfo').innerHTML = `
+                🔹 <b>이름:</b> ${name}<br>
+                ❤️ <b>체력:</b> ${Number(hp).toLocaleString()}<br>
+                ⚔️ <b>공격력:</b> ${Number(atk).toLocaleString()}<br>
+                🎯 <b>사거리:</b> ${range} (원거리)<br>
+                ✨ <b>특수 능력:</b> ${ability}
+            `;
+        }
+        // 초기 실행
+        updateStats();
+    </script>
+
+</body>
+</html>
